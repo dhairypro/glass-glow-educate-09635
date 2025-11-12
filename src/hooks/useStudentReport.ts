@@ -116,10 +116,15 @@ export const useStudentReport = (studentId: string | null) => {
         console.warn('Fee payments fetch error (table may not exist):', paymentsError);
       }
 
-      // Calculate statistics
+      // Calculate statistics with new formula: [(sum of percentage of n tests) / n]
       const totalObtained = marks?.reduce((sum, m) => sum + (m.marks_obtained || 0), 0) || 0;
       const totalMax = marks?.reduce((sum, m) => sum + (m.max_marks || 0), 0) || 0;
-      const averagePercentage = totalMax > 0 ? Math.round((totalObtained / totalMax) * 100 * 10) / 10 : 0;
+      const sumOfPercentages = marks?.reduce((sum, m) => {
+        const percentage = m.max_marks > 0 ? (m.marks_obtained / m.max_marks) * 100 : 0;
+        return sum + percentage;
+      }, 0) || 0;
+      const testCount = marks?.length || 0;
+      const averagePercentage = testCount > 0 ? Math.round((sumOfPercentages / testCount) * 10) / 10 : 0;
 
       return {
         profile: {

@@ -7,7 +7,7 @@ import { StudentSelector } from '@/components/admin/reports/StudentSelector';
 import { StudentInfoCard } from '@/components/admin/reports/StudentInfoCard';
 import { FeesCard } from '@/components/admin/reports/FeesCard';
 import { MarksTable } from '@/components/admin/reports/MarksTable';
-import { MarksChart } from '@/components/admin/reports/MarksChart';
+import { EnhancedMarksChart } from '@/components/admin/reports/EnhancedMarksChart';
 import { TrendChart } from '@/components/admin/reports/TrendChart';
 import { useStudentReport } from '@/hooks/useStudentReport';
 
@@ -77,7 +77,7 @@ export default function StudentReport() {
 
             {/* Charts */}
             <div className="space-y-6">
-              <MarksChart marks={reportData.marks} />
+              <EnhancedMarksChart marks={reportData.marks} />
               <TrendChart marks={reportData.marks} />
             </div>
 
