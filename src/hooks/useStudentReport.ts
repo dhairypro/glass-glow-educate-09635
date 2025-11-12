@@ -22,7 +22,6 @@ export interface StudentReportData {
     user_id: string;
     full_name: string;
     roll_no: string;
-    email: string;
     class_id: string;
     class_name: string;
   };
@@ -61,7 +60,6 @@ export const useStudentReport = (studentId: string | null) => {
           user_id,
           full_name,
           roll_no,
-          email,
           class_id,
           classes:class_id (title)
         `)
@@ -128,7 +126,6 @@ export const useStudentReport = (studentId: string | null) => {
           user_id: profile.user_id,
           full_name: profile.full_name,
           roll_no: profile.roll_no,
-          email: profile.email,
           class_id: profile.class_id,
           class_name: (profile.classes as any)?.title || 'N/A',
         },
