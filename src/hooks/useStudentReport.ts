@@ -66,9 +66,16 @@ export const useStudentReport = (studentId: string | null) => {
           classes:class_id (title)
         `)
         .eq('user_id', studentId)
-        .single();
+        .maybeSingle();
 
-      if (profileError) throw profileError;
+      if (profileError) {
+        console.error('Profile fetch error:', profileError);
+        throw profileError;
+      }
+      
+      if (!profile) {
+        throw new Error('Student profile not found');
+      }
 
       // Fetch all marks with exam and subject details
       const { data: marks, error: marksError } = await supabase
@@ -82,25 +89,34 @@ export const useStudentReport = (studentId: string | null) => {
           subjects:subject_id (id, name)
         `)
         .eq('student_id', studentId)
-        .order('exams(date)', { ascending: true });
+        .order('created_at', { ascending: true });
 
-      if (marksError) throw marksError;
+      if (marksError) {
+        console.error('Marks fetch error:', marksError);
+        throw marksError;
+      }
 
-      // Fetch fee summary
+      // Fetch fee summary (may not exist if tables not created)
       const { data: feeSummary, error: feeError } = await supabase
         .from('student_fee_summary')
         .select('*')
         .eq('student_id', studentId)
         .maybeSingle();
 
-      // Fetch fee payments
+      if (feeError) {
+        console.warn('Fee summary fetch error (table may not exist):', feeError);
+      }
+
+      // Fetch fee payments (may not exist if tables not created)
       const { data: feePayments, error: paymentsError } = await supabase
         .from('fee_payments')
         .select('id, amount, payment_date, payment_method, transaction_reference')
         .eq('student_id', studentId)
         .order('payment_date', { ascending: false });
 
-      if (paymentsError) throw paymentsError;
+      if (paymentsError) {
+        console.warn('Fee payments fetch error (table may not exist):', paymentsError);
+      }
 
       // Calculate statistics
       const totalObtained = marks?.reduce((sum, m) => sum + (m.marks_obtained || 0), 0) || 0;
