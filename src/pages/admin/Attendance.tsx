@@ -77,7 +77,7 @@ export default function Attendance() {
 
     const attendanceMap: Record<string, 'present' | 'absent' | 'late'> = {};
     existingAttendance?.forEach((record) => {
-      attendanceMap[record.student_id] = record.status;
+      attendanceMap[record.student_id] = record.status as 'present' | 'absent' | 'late';
     });
 
     (studentsData ?? []).forEach((student) => {
