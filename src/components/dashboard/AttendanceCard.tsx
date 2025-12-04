@@ -28,7 +28,11 @@ export default function AttendanceCard({ studentId }: { studentId: string }) {
       .order('date', { ascending: false })
       .limit(30);
 
-    setAttendance(data || []);
+    const typedData: AttendanceRecord[] = (data || []).map(d => ({
+      date: d.date,
+      status: d.status as 'present' | 'absent' | 'late'
+    }));
+    setAttendance(typedData);
     setLoading(false);
   };
 

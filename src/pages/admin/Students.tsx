@@ -23,8 +23,7 @@ export default function Students() {
 
   const filteredStudents = students?.filter(student =>
     student.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    student.roll_no?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    student.email?.toLowerCase().includes(searchTerm.toLowerCase())
+    student.roll_no?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleUpdate = () => {
@@ -72,7 +71,6 @@ export default function Students() {
                   <TableRow>
                     <TableHead>Roll No</TableHead>
                     <TableHead>Full Name</TableHead>
-                    <TableHead>Email</TableHead>
                     <TableHead>Class</TableHead>
                     <TableHead>Actions</TableHead>
                   </TableRow>
@@ -82,7 +80,6 @@ export default function Students() {
                     <TableRow key={student.id}>
                       <TableCell>{student.roll_no || 'N/A'}</TableCell>
                       <TableCell>{student.full_name || 'N/A'}</TableCell>
-                      <TableCell>{student.email}</TableCell>
                       <TableCell>{student.classes?.title || 'Not Assigned'}</TableCell>
                       <TableCell>
                         <div className="flex gap-2">
